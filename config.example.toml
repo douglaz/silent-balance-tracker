@@ -1,0 +1,18 @@
+[database]
+path = "./silent_balance.sqlite"
+
+[server]
+host = "0.0.0.0"
+port = 8080
+
+[poller]
+interval_seconds = 300
+request_timeout_seconds = 20
+
+[[accounts]]
+name = "primary"
+url = "https://silent.link/order/REPLACE_ME_PRIMARY"
+
+[[accounts]]
+name = "secondary"
+url = "https://silent.link/order/REPLACE_ME_SECONDARY"

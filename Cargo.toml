@@ -1,0 +1,57 @@
+[package]
+name = "silent-balance-tracker"
+version = "0.1.0"
+edition = "2021"
+description = "Tracks silent.link order balances across multiple accounts and serves a small dashboard"
+license = "MIT"
+repository = "https://github.com/douglaz/silent-balance-tracker"
+
+[dependencies]
+# CLI
+clap = { version = "4.5", features = ["derive", "env"] }
+
+# Web
+axum = "0.7"
+tower-http = { version = "0.5", features = ["trace"] }
+
+# Async runtime
+tokio = { version = "1.40", features = ["full"] }
+
+# HTTP client
+reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls"] }
+
+# SQLite (statically linked via the bundled feature so musl builds work)
+rusqlite = { version = "0.32", features = ["bundled", "chrono"] }
+
+# Serialization
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+toml = "0.8"
+
+# Logging
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+# Errors
+anyhow = "1.0"
+thiserror = "1.0"
+
+# Time
+chrono = { version = "0.4", features = ["serde"] }
+
+# URL parsing for extracting tokens from order URLs
+url = "2.5"
+
+[dev-dependencies]
+wiremock = "0.6"
+tempfile = "3.10"
+
+[profile.release]
+lto = true
+codegen-units = 1
+strip = true
+opt-level = "z"
+panic = "abort"
+
+[profile.dev]
+debug = true

@@ -1,0 +1,7 @@
+/target
+/result
+.env
+*.sqlite
+*.sqlite-journal
+*.db
+data/
