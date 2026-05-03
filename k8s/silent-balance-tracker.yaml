@@ -75,8 +75,8 @@ spec:
     spec:
       containers:
         - name: silent-balance-tracker
-          # Pinned by digest. Source commit: 5a0904b. Also tagged :5a0904b for readability.
-          image: ghcr.io/douglaz/silent-balance-tracker@sha256:f29a8501826c7c25bc95f0425c4131ff9ae512c5735a850a34c7d3ebc8329a91
+          # Pinned by digest. Source commit: 44aa61e. Also tagged :44aa61e for readability.
+          image: ghcr.io/douglaz/silent-balance-tracker@sha256:99ca93186dc78f5a4225453a28fa7351f00155d43207dff6d02992e25e825ca0
           imagePullPolicy: IfNotPresent
           command: ["/bin/silent-balance-tracker"]
           args: ["serve", "--config", "/etc/silent-balance/config.toml"]
