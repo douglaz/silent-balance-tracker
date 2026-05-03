@@ -198,7 +198,7 @@ const ACCOUNT_PAGE_TEMPLATE: &str = r#"<!doctype html>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
   <style>
     :root { color-scheme: light dark; }
-    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; max-width: 1100px; margin: 2rem auto; padding: 0 1rem; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; max-width: 1100px; margin: 2rem auto; padding: 0 1rem 3rem; }
     h1 { margin-bottom: 0.25rem; }
     .sub { color: #666; margin-top: 0; font-size: 0.9rem; }
     .stats { display: flex; flex-wrap: wrap; gap: 2rem; margin: 1rem 0 2rem; }
@@ -209,7 +209,7 @@ const ACCOUNT_PAGE_TEMPLATE: &str = r#"<!doctype html>
     .status-error { color: #b00020; }
     .controls { margin-bottom: 1rem; }
     .controls label { margin-right: 1rem; font-size: 0.9rem; }
-    .chart-wrap { position: relative; height: 420px; }
+    .chart-wrap { position: relative; height: 480px; }
     .note { background: rgba(176,0,32,0.08); border-left: 3px solid #b00020; padding: 0.5rem 0.75rem; font-size: 0.85rem; margin-top: 1rem; white-space: pre-wrap; word-break: break-word; }
     code { background: rgba(0,0,0,0.06); padding: 0 0.25rem; border-radius: 3px; }
   </style>
@@ -269,6 +269,12 @@ const ACCOUNT_PAGE_TEMPLATE: &str = r#"<!doctype html>
       else { note.style.display = 'none'; }
     }
 
+    // Adapt grid + tick + label colors so the chart is legible in both
+    // light and dark mode (Chart.js doesn't do this on its own).
+    const dark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const gridColor = dark ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.08)';
+    const tickColor = dark ? 'rgba(255,255,255,0.75)' : 'rgba(0,0,0,0.75)';
+
     let chart;
     async function loadChart() {
       const days = parseInt(document.getElementById('range').value, 10);
@@ -288,14 +294,30 @@ const ACCOUNT_PAGE_TEMPLATE: &str = r#"<!doctype html>
           backgroundColor: '#3366cc33',
           tension: 0.15,
           spanGaps: true,
+          pointRadius: 2,
         }] },
         options: {
           responsive: true,
           maintainAspectRatio: false,
           interaction: { mode: 'nearest', intersect: false },
+          // Reserve room around the plot so axis labels never get clipped.
+          layout: { padding: { top: 8, right: 12, bottom: 8, left: 8 } },
           scales: {
-            x: { type: 'time', time: { tooltipFormat: 'yyyy-MM-dd HH:mm' } },
-            y: { title: { display: true, text: 'balance (USD)' } },
+            x: {
+              type: 'time',
+              time: { tooltipFormat: 'yyyy-MM-dd HH:mm' },
+              ticks: { color: tickColor, maxRotation: 0, autoSkipPadding: 24 },
+              grid: { color: gridColor },
+            },
+            y: {
+              title: { display: true, text: 'balance (USD)', color: tickColor },
+              // Force breathing room above/below the line — important when
+              // the balance is essentially flat (otherwise Chart.js auto-
+              // scales to a microscopic range and the line lands on the axis).
+              grace: '15%',
+              ticks: { color: tickColor },
+              grid: { color: gridColor },
+            },
           },
           plugins: { legend: { display: false } },
         },
