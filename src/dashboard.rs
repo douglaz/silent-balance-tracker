@@ -292,7 +292,6 @@ const ACCOUNT_PAGE_TEMPLATE: &str = r#"<!doctype html>
         options: {
           responsive: true,
           maintainAspectRatio: false,
-          parsing: false,
           interaction: { mode: 'nearest', intersect: false },
           scales: {
             x: { type: 'time', time: { tooltipFormat: 'yyyy-MM-dd HH:mm' } },
