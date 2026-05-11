@@ -305,7 +305,19 @@ const ACCOUNT_PAGE_TEMPLATE: &str = r#"<!doctype html>
           scales: {
             x: {
               type: 'time',
-              time: { tooltipFormat: 'yyyy-MM-dd HH:mm' },
+              time: {
+                tooltipFormat: 'yyyy-MM-dd HH:mm',
+                // Always include the date in tick labels so a chart spanning
+                // many days isn't mistaken for a single-day view when Chart.js
+                // auto-picks the `hour` unit (its default `h a` format drops
+                // the date entirely).
+                displayFormats: {
+                  hour: 'MMM d, HH:mm',
+                  day: 'MMM d',
+                  week: 'MMM d',
+                  month: 'MMM yyyy',
+                },
+              },
               ticks: { color: tickColor, maxRotation: 0, autoSkipPadding: 24 },
               grid: { color: gridColor },
             },
