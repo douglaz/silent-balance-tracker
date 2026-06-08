@@ -15,7 +15,7 @@ axum = "0.7"
 tower-http = { version = "0.5", features = ["trace"] }
 
 # Async runtime
-tokio = { version = "1.40", features = ["full"] }
+tokio = { version = "1.52", features = ["full"] }
 
 # HTTP client
 reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls"] }
