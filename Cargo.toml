@@ -11,7 +11,7 @@ repository = "https://github.com/douglaz/silent-balance-tracker"
 clap = { version = "4.5", features = ["derive", "env"] }
 
 # Web
-axum = "0.7"
+axum = "0.8"
 tower-http = { version = "0.6", features = ["trace"] }
 
 # Async runtime
