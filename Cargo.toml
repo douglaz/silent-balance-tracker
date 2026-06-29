@@ -12,7 +12,7 @@ clap = { version = "4.5", features = ["derive", "env"] }
 
 # Web
 axum = "0.8"
-tower-http = { version = "0.6", features = ["trace"] }
+tower-http = { version = "0.7", features = ["trace"] }
 
 # Async runtime
 tokio = { version = "1.52", features = ["full"] }
